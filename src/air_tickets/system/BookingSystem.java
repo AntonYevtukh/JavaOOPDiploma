@@ -1,44 +1,48 @@
 package air_tickets.system;
 
-import air_tickets.FlightRecord;
-import air_tickets.Passenger;
-import air_tickets.SeatClass;
-import air_tickets.Ticket;
+import air_tickets.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Anton on 10.07.2017.
  */
 public class BookingSystem {
 
-    public static List<Ticket> bookTickets(FlightRecord flightRecord, Map<SeatClass, Integer> seats, List<Passenger> passengers) {
+    public static List<Ticket> bookTickets(User user, FlightRecord flightRecord,
+                                           Map<Passenger, SeatClass> passengerSeats, boolean isBoughtDirectly) {
 
         List<Ticket> bookedTickets = new ArrayList<>();
+        long fullPrice = 0;
 
-        //TODO check tickets availability
-        int totalSeats = 0;
+        if (!isBoughtDirectly)
+            for(SeatClass seatClass : passengerSeats.values())
+                fullPrice += user.getTariff().calculateBookingPrice(flightRecord, seatClass);
+        else
+            for(SeatClass seatClass : passengerSeats.values())
+                fullPrice += user.getTariff().calculateFullPrice(flightRecord, seatClass);
 
-        for (SeatClass seatClass : seats.keySet())
-            for (int i = 0; i < seats.get(seatClass); i++) {
-                totalSeats++;
-            }
+        if (user.getBalance() < fullPrice)
+            throw new RuntimeException("Not enough amount on the user balance!");
 
-        if (totalSeats != passengers.size())
-            throw new IllegalArgumentException("Mismatch of seats and passengers count");
+        if (!checkSeatsForPassengers(flightRecord, passengerSeats))
+            throw new RuntimeException("Not enough available seats");
 
-        int passengerCounter = 0;
-
-        for(SeatClass seatClass : seats.keySet())
-            for (int i = 0; i < seats.get(seatClass); i++) {
-                bookedTickets.add(new Ticket(flightRecord, passengers.get(passengerCounter)));
-            }
-
-        for (SeatClass seatClass : seats.keySet())
-            flightRecord.getAvailableSeats()
+        for (Passenger passenger : passengerSeats.keySet())
+            bookedTickets.add(new Ticket(flightRecord, passenger, passengerSeats.get(passenger),
+                    isBoughtDirectly ? State.BOUGHT : State.BOOKED));
 
         return bookedTickets;
+    }
+
+    private static boolean checkSeatsForPassengers(FlightRecord flightRecord, Map<Passenger, SeatClass> passengerSeats) {
+        Map<SeatClass, Integer> requiredSeats = new HashMap<>();
+        for (SeatClass seatClass : passengerSeats.values()) {
+            if (!requiredSeats.containsKey(seatClass))
+                requiredSeats.put(seatClass, 1);
+            else
+                requiredSeats.put(seatClass, requiredSeats.get(seatClass) + 1);
+        }
+        return flightRecord.isEnouhgSeats(requiredSeats);
     }
 }

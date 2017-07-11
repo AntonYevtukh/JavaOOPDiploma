@@ -9,11 +9,13 @@ public class Ticket {
 
     private FlightRecord flightRecord;
     private Passenger passenger;
-    private FlightCoupon flightCoupon;
+    private SeatClass seatClass;
+    private State bookingState;
 
-    public Ticket(FlightRecord flightRecord, Passenger passenger) {
+    public Ticket(FlightRecord flightRecord, Passenger passenger, SeatClass seatClass, State bookingState) {
         this.flightRecord = flightRecord;
         this.passenger = passenger;
+        this.seatClass = seatClass;
     }
 
     public FlightRecord getFlightRecord() {
@@ -22,6 +24,10 @@ public class Ticket {
 
     public Passenger getPassenger() {
         return passenger;
+    }
+
+    public SeatClass getSeatClass() {
+        return seatClass;
     }
 
     String getShortInfo() {

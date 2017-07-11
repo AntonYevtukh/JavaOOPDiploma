@@ -55,7 +55,13 @@ public class FlightRecord {
         return true;
     }
 
-    public void changeAvailableSeats()
+    public void incrementAvailableSeats(SeatClass seatClass) {
+        availableSeats.put(seatClass, availableSeats.get(seatClass) + 1);
+    }
+
+    public void decrementAvailableSeats(SeatClass seatClass) {
+        availableSeats.put(seatClass, availableSeats.get(seatClass) - 1);
+    }
 
 }
     /*public List<String> bookTickets(Map<SeatClass, Integer> seatCount) {    //Забронировать билеты
