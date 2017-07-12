@@ -1,4 +1,4 @@
-package air_tickets.world;
+package air_tickets.globals;
 
 import air_tickets.Flight;
 import air_tickets.FlightRecord;
@@ -32,5 +32,12 @@ public class Schedule {
 
     public List<FlightRecord> getFlightRecords() {
         return new ArrayList<>(records.values());
+    }
+
+    public FlightRecord getFlightRecordById(String flightRecordId) {
+        for (FlightRecord flightRecord : records.values())
+            if (flightRecord.getId().equals(flightRecordId))
+                return flightRecord;
+        return null;
     }
 }

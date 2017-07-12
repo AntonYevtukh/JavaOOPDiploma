@@ -1,6 +1,8 @@
 package air_tickets;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Anton on 10.07.2017.

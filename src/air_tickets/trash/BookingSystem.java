@@ -1,4 +1,4 @@
-package air_tickets.system;
+package air_tickets.trash;
 
 import air_tickets.*;
 
@@ -26,12 +26,17 @@ public class BookingSystem {
             throw new RuntimeException("Not enough amount on the user balance!");
 
         if (!checkSeatsForPassengers(flightRecord, passengerSeats))
-            throw new RuntimeException("Not enough available seats");
+            throw new RuntimeException("Not enough available seats is available on flight!");
 
-        for (Passenger passenger : passengerSeats.keySet())
-            bookedTickets.add(new Ticket(flightRecord, passenger, passengerSeats.get(passenger),
-                    isBoughtDirectly ? State.BOUGHT : State.BOOKED));
+        for (Passenger passenger : passengerSeats.keySet()) {
+            long price = !isBoughtDirectly ?
+                    user.getTariff().calculateBookingPrice(flightRecord, passengerSeats.get(passenger)) :
+                    user.getTariff().calculateFullPrice(flightRecord, passengerSeats.get(passenger));
+            bookedTickets.add(new Ticket(flightRecord.getId(), passenger, passengerSeats.get(passenger),
+                    isBoughtDirectly ? State.BOUGHT : State.BOOKED, price));
+        }
 
+        user.getAccount().withdraw(fullPrice);
         return bookedTickets;
     }
 

@@ -11,11 +11,14 @@ public class Aircraft {
     private String type;
     private Map<SeatClass, Integer> seats = new HashMap<>();
 
-    Aircraft(String type, int economySeats, int businessSeats, int firstSeats) {
+    Aircraft(String type, int... seatsCount) {
         this.type = type;
-        seats.put(SeatClass.ECONOMY, economySeats);
-        seats.put(SeatClass.BUSINESS, businessSeats);
-        seats.put(SeatClass.FIRST, firstSeats);
+        if (seatsCount.length != SeatClass.values().length)
+            throw new IllegalArgumentException("Mismatch of seats count description");
+        else
+            for (int i = 0; i < seatsCount.length; i++) {
+                seats.put(SeatClass.values()[i], seatsCount[i]);
+            }
     }
 
     public String getType() {

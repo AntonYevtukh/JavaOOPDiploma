@@ -1,5 +1,7 @@
 package air_tickets;
 
+import air_tickets.globals.World;
+
 import java.time.LocalTime;
 
 /**
@@ -8,18 +10,23 @@ import java.time.LocalTime;
 public class Flight {
 
     private String flightNumber;
-    private Airport origin;
-    private Airport destination;
+    private String originIata;
+    private String destinationIata;
     private LocalTime departure;
     private LocalTime arrival;
     private Aircraft aircraft;
     private String airline;
 
-    public Flight(String flightNumber, Airport origin, Airport destination,
+    public Flight(String flightNumber, String originIata, String destinationIata,
                   LocalTime departure, LocalTime arrival, Aircraft aircraft, String airline) {
+
+        String errorMessage = checkWaypoints(originIata, destinationIata);
+        if (errorMessage.equals(""))
+            throw new IllegalArgumentException(errorMessage);
+
         this.flightNumber = flightNumber;
-        this.origin = origin;
-        this.destination = destination;
+        this.originIata = originIata;
+        this.destinationIata = destinationIata;
         this.departure = departure;
         this.arrival = arrival;
         this.aircraft = aircraft;
@@ -30,12 +37,12 @@ public class Flight {
         return flightNumber;
     }
 
-    public Airport getOrigin() {
-        return origin;
+    public String getOriginIata() {
+        return originIata;
     }
 
-    public Airport getDestination() {
-        return destination;
+    public String getDestinationIata() {
+        return destinationIata;
     }
 
     public LocalTime getDeparture() {
@@ -52,5 +59,14 @@ public class Flight {
 
     public String getAirline() {
         return airline;
+    }
+
+    private String checkWaypoints(String originIata, String destinationIata) {
+        String errorMessage = "";
+        if (World.getInstance().getAirportByIata(originIata) == null)
+            errorMessage += "IATA code of origin " + originIata + " is not found in DB";
+        if (World.getInstance().getAirportByIata(destinationIata) == null)
+            errorMessage += "IATA code of destination " + destinationIata + " is not found in DB";
+        return errorMessage;
     }
 }

@@ -1,4 +1,4 @@
-package air_tickets.world;
+package air_tickets.globals;
 
 import air_tickets.Airport;
 import air_tickets.City;
@@ -18,6 +18,10 @@ public class World {
     private final Map<String, City> cities = new HashMap<>();
 
     private World() {}
+
+    public static World getInstance() {
+        return instance;
+    }
 
     public void addAirport(Airport airport)
             throws IllegalArgumentException {
