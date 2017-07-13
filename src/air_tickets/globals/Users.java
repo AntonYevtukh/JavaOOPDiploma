@@ -14,6 +14,7 @@ import java.util.Map;
 public class Users {
 
     private final static Users instance = new Users();
+    private User currentUser;
     private final Map<String, User> accounts = new HashMap<>();
 
     private Users() {}
@@ -26,15 +27,20 @@ public class Users {
             throws IllegalArgumentException {
         if (!accounts.containsKey(login))
             throw new IllegalArgumentException("User not found");
-        else return accounts.get(login);
+        else {
+            currentUser = accounts.get(login);
+            return currentUser;
+        }
     }
 
     public User SignUp (User newUser)
             throws IllegalArgumentException {
         if (!accounts.containsKey(newUser.getLogin()))
             throw new IllegalArgumentException("Login already exists");
-        else
+        else {
             accounts.put(newUser.getLogin(), newUser);
-        return newUser;
+            currentUser = newUser;
+            return newUser;
+        }
     }
 }

@@ -42,4 +42,14 @@ public class Passenger {
     public String getFullName() {
         return name + " " + surname;
     }
+
+    public String toString() {
+        String result = "Passenger info:";
+        result += "\n--------------------------------------------------------------------------\n";
+        result += "Name: " + name + ", Surname: " + surname + "\n";
+        result += "Date of birth: " + birthday.toString() + ", Gender: " + gender.toString() + "\n";
+        result += "Passport number: " + passportNumber;
+        result += "\n--------------------------------------------------------------------------\n";
+        return result;
+    }
 }

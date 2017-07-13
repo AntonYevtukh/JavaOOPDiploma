@@ -1,5 +1,6 @@
 package air_tickets;
 
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 
 /**
@@ -9,9 +10,9 @@ public class Airport {
 
     private String name;
     private String iata;
-    private ZoneOffset timezone;
+    private ZoneId timezone;
 
-    public Airport(String name, String iata, ZoneOffset timezone) {
+    public Airport(String name, String iata, ZoneId timezone) {
         this.name = name;
         this.iata = iata;
         this.timezone = timezone;
@@ -25,7 +26,11 @@ public class Airport {
         return iata;
     }
 
-    public ZoneOffset getTimezone() {
+    public ZoneId getTimezone() {
         return timezone;
+    }
+
+    public String toString() {
+        return "Name: " + name + ", IATA: " + iata + ", Time Zone: " + timezone.toString() + ".";
     }
 }

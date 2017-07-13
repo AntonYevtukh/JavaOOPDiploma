@@ -11,7 +11,7 @@ public class Aircraft {
     private String type;
     private Map<SeatClass, Integer> seats = new HashMap<>();
 
-    Aircraft(String type, int... seatsCount) {
+    public Aircraft(String type, int... seatsCount) {
         this.type = type;
         if (seatsCount.length != SeatClass.values().length)
             throw new IllegalArgumentException("Mismatch of seats count description");
@@ -31,5 +31,19 @@ public class Aircraft {
 
     public Map<SeatClass, Integer> getSeats() {
         return seats;
+    }
+
+    public String toString() {
+        return type;
+    }
+
+    public String getFullInfo() {
+
+        String result = "\nType: " + type + ", available seats:\n";
+
+        for (SeatClass seatClass : seats.keySet())
+            result += seatClass.toString() + ": " + seats.get(seatClass) + ";\n";
+
+        return result;
     }
 }

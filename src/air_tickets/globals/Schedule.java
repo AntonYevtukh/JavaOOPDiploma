@@ -1,5 +1,6 @@
 package air_tickets.globals;
 
+import air_tickets.Airport;
 import air_tickets.Flight;
 import air_tickets.FlightRecord;
 import air_tickets.SeatClass;
@@ -39,5 +40,25 @@ public class Schedule {
             if (flightRecord.getId().equals(flightRecordId))
                 return flightRecord;
         return null;
+    }
+
+    public List<FlightRecord> searchForFlight(List<String> originIatas, List<String > destinationIatas,
+                                              LocalDate date, SeatClass seatClass, int seatCount) {
+        List<FlightRecord> result = new ArrayList<>();
+
+        for (FlightRecord flightRecord : getFlightRecords())
+            if (flightRecord.getDate().equals(date) && originIatas.contains(flightRecord.getFlight().getOriginIata()) &&
+                    destinationIatas.contains(flightRecord.getFlight().getDestinationIata()) &&
+                    flightRecord.isEnoughSeats(seatClass, seatCount))
+                result.add(flightRecord);
+        return result;
+    }
+
+    public String allFlightString() {
+        String separator = "--------------------------------------------------------------------------\n";
+        StringJoiner joiner = new StringJoiner("", "All flights in schedule:\n" + separator, "");
+        for (FlightRecord record : records.values())
+            joiner.add(record.getFullInfo());
+        return joiner.toString();
     }
 }

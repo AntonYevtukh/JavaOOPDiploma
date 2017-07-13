@@ -21,7 +21,7 @@ public class Flight {
                   LocalTime departure, LocalTime arrival, Aircraft aircraft, String airline) {
 
         String errorMessage = checkWaypoints(originIata, destinationIata);
-        if (errorMessage.equals(""))
+        if (!errorMessage.equals(""))
             throw new IllegalArgumentException(errorMessage);
 
         this.flightNumber = flightNumber;

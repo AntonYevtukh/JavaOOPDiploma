@@ -32,4 +32,8 @@ public class City {
     public Set<Airport> getAirports() {
         return airports;
     }
+
+    public String toString() {
+        return "Name: " + name + ", IATA: " + iata + ".";
+    }
 }

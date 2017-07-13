@@ -63,4 +63,23 @@ public class FlightRecord {
         availableSeats.put(seatClass, availableSeats.get(seatClass) - 1);
     }
 
+    public String getFullInfo() {
+        StringBuilder result = new StringBuilder(this.toString());
+        result.append("Available seats: \tCount \tPrice\n");
+        for (SeatClass seatClass : availableSeats.keySet())
+            result.append(seatClass + ":\t\t\t" + availableSeats.get(seatClass) + "\t\t" + prices.get(seatClass) + "\n");
+        result.append("--------------------------------------------------------------------------\n");
+        return result.toString();
+    }
+
+    public String toString() {
+        StringBuilder result = new StringBuilder("Flight info:");
+        result.append("\n--------------------------------------------------------------------------\n");
+        result.append("Flight date: \t\t" + date + "\n");
+        result.append("Origin: \t\t\t" + flight.getOriginIata() + ", Departure at: \t" + flight.getDeparture() + "\n");
+        result.append("Destination: \t\t" + flight.getDestinationIata() + ", Arrival at: \t" + flight.getArrival() + "\n");
+        result.append("Airline: \t\t\t" + flight.getAirline() + "\n");
+        result.append("Aircraft: \t\t\t" + flight.getAircraft() + "\n");
+        return result.toString();
+    }
 }

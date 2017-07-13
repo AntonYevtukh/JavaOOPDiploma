@@ -3,10 +3,7 @@ package air_tickets.globals;
 import air_tickets.Airport;
 import air_tickets.City;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Anton on 10.07.2017.
@@ -28,13 +25,24 @@ public class World {
         if (!airports.containsKey(airport.getIata()))
             airports.put(airport.getIata(), airport);
         else
-            throw new IllegalArgumentException("This airport already exists!");
+            throw new IllegalArgumentException("This airport already exists");
+    }
+
+    public void addAirports(Airport... airports)
+            throws IllegalArgumentException {
+        for (Airport airport : airports)
+            addAirport(airport);
+    }
+
+    public void addCities(City... cities) {
+        for (City city : cities)
+            addCity(city);
     }
 
     public void addCity(City city)
             throws IllegalArgumentException {
         String errorMessage = "";
-        if (!cities.containsKey(city)) {
+        if (!cities.containsKey(city.getIata())) {
             cities.put(city.getIata(), city);
             for (Airport airport : city.getAirports())
                 try {
@@ -74,5 +82,47 @@ public class World {
             if (city.getName().equals(name))
                 return new ArrayList<>(city.getAirports());
         return null;
+    }
+
+    public List<String> getAirportIatasByString(String target) {
+        List<Airport> foundAirports = new ArrayList<>();
+        List<String> result = new ArrayList<>();
+        if (isIataCode(target)) {
+            String iata = target;
+            if (cities.containsKey(iata))
+                foundAirports.addAll(getAirportsByCityIata(iata));
+            else if (airports.containsKey(iata))
+                foundAirports.add(getAirportByIata(iata));
+        }
+        else {
+            String name = target;
+            if (getAirportsByCityName(name) != null)
+                foundAirports.addAll(getAirportsByCityName(name));
+            else if (getAirportByName(name) != null)
+                foundAirports.add(getAirportByName(name));
+        }
+        for (Airport airport : foundAirports)
+            result.add(airport.getIata());
+        return result;
+    }
+
+    private boolean isIataCode(String target) {
+        return target.length() == 3 && target.equals(target.toUpperCase());
+    }
+
+    public String getAirportsString() {
+        String separator = "\n------------------------------------------------------------------------------\n";
+        StringJoiner joiner = new StringJoiner("\n", "World's airports" + separator, separator);
+        for (Airport airport : airports.values())
+            joiner.add(airport.toString());
+        return joiner.toString();
+    }
+
+    public String getCitiesString() {
+        String separator = "\n------------------------------------------------------------------------------\n";
+        StringJoiner joiner = new StringJoiner("\n", "World's cities" + separator, separator);
+        for (City city : cities.values())
+            joiner.add(city.toString());
+        return joiner.toString();
     }
 }

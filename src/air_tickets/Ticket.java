@@ -53,4 +53,15 @@ public class Ticket {
                 "Destination: " + getFlightRecord().getFlight().getDestinationIata() +
                 ";\nPassenger: " + passenger.getFullName().toUpperCase();
     }
+
+    String getFullInfo() {
+        StringBuilder result = new StringBuilder("Ticket info: ");
+        result.append("\n**************************************************************************\n");
+        result.append(getFlightRecord().toString()).append(passenger.toString());
+        result.append("Booking info: ");
+        result.append("\n--------------------------------------------------------------------------\n");
+        result.append("Booked at: " + bookedAt.toString() + ", Full price: $" + price + ", Booking status: " + bookingState);
+        result.append("\n**************************************************************************\n");
+        return result.toString();
+    }
 }
