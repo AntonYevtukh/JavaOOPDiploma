@@ -1,9 +1,12 @@
 package air_tickets;
 
 import air_tickets.globals.Schedule;
+import air_tickets.globals.Users;
+import air_tickets.tariffs.Tariff;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 /**
@@ -19,11 +22,13 @@ public class Ticket {
     private long price;
     private LocalDateTime bookedAt;
 
-    public Ticket(String flightRecordId, Passenger passenger, SeatClass seatClass, State bookingState, long price) {
+    public Ticket(String flightRecordId, Passenger passenger, SeatClass seatClass,
+                  boolean isBuyingDirectly, long price) {
         this.flightRecordId = flightRecordId;
         this.passenger = passenger;
         this.seatClass = seatClass;
         this.price = price;
+        this.bookingState = isBuyingDirectly ? State.BOUGHT : State.BOOKED;
         this.bookedAt = LocalDateTime.now(ZoneOffset.UTC);
     }
 
@@ -39,8 +44,22 @@ public class Ticket {
         return seatClass;
     }
 
+    public long getPrice() {
+        return price;
+    }
+
     public State getBookingState() {
         return bookingState;
+    }
+
+    public long getUnBookingRefund() {
+        Tariff tariff = Users.getInstance().getCurrentUser().getTariff();
+        return tariff.calculateUnBookingRefund(this);
+    }
+
+    public long getPriceForBooked() {
+        Tariff tariff = Users.getInstance().getCurrentUser().getTariff();
+        return tariff.calculatePriceForBooked(this);
     }
 
     public void setBookingState(State bookingState) {
@@ -54,13 +73,21 @@ public class Ticket {
                 ";\nPassenger: " + passenger.getFullName().toUpperCase();
     }
 
-    String getFullInfo() {
+    public String toString () {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
         StringBuilder result = new StringBuilder("Ticket info: ");
         result.append("\n**************************************************************************\n");
-        result.append(getFlightRecord().toString()).append(passenger.toString());
+        result.append(getFlightRecord().getTicketInfo());
+        result.append("--------------------------------------------------------------------------\n");
+        result.append(passenger.toString());
         result.append("Booking info: ");
         result.append("\n--------------------------------------------------------------------------\n");
-        result.append("Booked at: " + bookedAt.toString() + ", Full price: $" + price + ", Booking status: " + bookingState);
+        result.append("Class: " + seatClass + "\n");
+        result.append("Booked at: " + bookedAt.format(formatter) + ", Booking status: " + bookingState.toString() + "\n");
+        result.append("Full price: $" + price + "\n");
+        result.append("Full price if already booked: $" + getPriceForBooked() + "\n");
+        result.append("Unbooking refund: $" + getUnBookingRefund() + "\n");
+        result.append("Expired: " + (getFlightRecord().isExpired() ? "Yes" : "No"));
         result.append("\n**************************************************************************\n");
         return result.toString();
     }

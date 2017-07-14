@@ -1,5 +1,6 @@
 package air_tickets.tariffs;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -7,11 +8,12 @@ import java.util.Map;
  */
 public class Tariffs {
 
-    private Map<TariffType, Tariff> tarrifs;
+    private Map<TariffType, Tariff> tarrifs = new HashMap<>();
     private static Tariffs instance = new Tariffs();
 
     private Tariffs() {
-
+        tarrifs.put(TariffType.STANDARD, new StandardTariff());
+        tarrifs.put(TariffType.GOLD, new GoldTariff());
     }
 
     public static Tariffs getInstance() {

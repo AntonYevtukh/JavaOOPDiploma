@@ -15,6 +15,7 @@ public class Users {
 
     private final static Users instance = new Users();
     private User currentUser;
+    private User defaultUser = new User("Unregistered user");
     private final Map<String, User> accounts = new HashMap<>();
 
     private Users() {}
@@ -23,7 +24,7 @@ public class Users {
         return instance;
     }
 
-    public User SignIn (String login)
+    public User signIn (String login)
             throws IllegalArgumentException {
         if (!accounts.containsKey(login))
             throw new IllegalArgumentException("User not found");
@@ -33,14 +34,26 @@ public class Users {
         }
     }
 
-    public User SignUp (User newUser)
+    public User signUp (User newUser)
             throws IllegalArgumentException {
-        if (!accounts.containsKey(newUser.getLogin()))
+        if (accounts.containsKey(newUser.getLogin()))
             throw new IllegalArgumentException("Login already exists");
         else {
             accounts.put(newUser.getLogin(), newUser);
             currentUser = newUser;
             return newUser;
         }
+    }
+
+    public void signOut() {
+        currentUser = defaultUser;
+    }
+
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    public Map<String, User> getAccounts() {
+        return accounts;
     }
 }

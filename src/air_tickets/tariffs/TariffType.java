@@ -5,5 +5,5 @@ package air_tickets.tariffs;
  */
 public enum TariffType {
 
-    STANDART, GOLD, PLATINUM
+    STANDARD, GOLD, PLATINUM
 }

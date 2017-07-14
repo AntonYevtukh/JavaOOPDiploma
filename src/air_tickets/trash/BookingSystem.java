@@ -33,7 +33,7 @@ public class BookingSystem {
                     user.getTariff().calculateBookingPrice(flightRecord, passengerSeats.get(passenger)) :
                     user.getTariff().calculateFullPrice(flightRecord, passengerSeats.get(passenger));
             bookedTickets.add(new Ticket(flightRecord.getId(), passenger, passengerSeats.get(passenger),
-                    isBoughtDirectly ? State.BOUGHT : State.BOOKED, price));
+                    isBoughtDirectly, price));
         }
 
         user.getAccount().withdraw(fullPrice);

@@ -15,7 +15,8 @@ public interface Tariff {
 
     long calculateBookingPrice(FlightRecord flightRecord, SeatClass seatClass);
     long calculateFullPrice(FlightRecord flightRecord, SeatClass seatClass);
-    long calculateUnBookingRefund(List<Ticket> tickets);
-    long calculatePriceForBooked(List<Ticket> tickets);
+    long calculateUnBookingRefund(Ticket ticket);
+    long calculatePriceForBooked(Ticket ticket);
+    long requiredForUpgrade(long totallyPaid);
     TariffType getNextTariff(long totallyPaid);
 }

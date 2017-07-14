@@ -1,8 +1,11 @@
 package air_tickets;
 
+import air_tickets.globals.Users;
 import air_tickets.trash.FlightCoupon;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 /**
@@ -63,23 +66,34 @@ public class FlightRecord {
         availableSeats.put(seatClass, availableSeats.get(seatClass) - 1);
     }
 
-    public String getFullInfo() {
-        StringBuilder result = new StringBuilder(this.toString());
-        result.append("Available seats: \tCount \tPrice\n");
-        for (SeatClass seatClass : availableSeats.keySet())
-            result.append(seatClass + ":\t\t\t" + availableSeats.get(seatClass) + "\t\t" + prices.get(seatClass) + "\n");
+    public boolean isExpired() {
+        LocalDateTime startDateTime = LocalDateTime.of(date, flight.getDeparture());
+        return startDateTime.isBefore(LocalDateTime.now());
+    }
+
+    public String toString() {
+        User user = Users.getInstance().getCurrentUser();
+        StringBuilder result = new StringBuilder(this.getTicketInfo());
+        result.append("Available seats: \tCount \tBooking price \tFullPrice\n");
+        for (SeatClass seatClass : availableSeats.keySet()) {
+            result.append(seatClass + ":\t\t\t" + availableSeats.get(seatClass) + "\t\t$");
+            result.append(user.getTariff().calculateBookingPrice(this, seatClass) + "\t\t\t\t$");
+            result.append(user.getTariff().calculateFullPrice(this, seatClass) + "\n");
+        }
         result.append("--------------------------------------------------------------------------\n");
         return result.toString();
     }
 
-    public String toString() {
+    public String getTicketInfo() {
         StringBuilder result = new StringBuilder("Flight info:");
         result.append("\n--------------------------------------------------------------------------\n");
+        result.append("Flight number: \t\t" + flight.getFlightNumber() + "\n");
         result.append("Flight date: \t\t" + date + "\n");
         result.append("Origin: \t\t\t" + flight.getOriginIata() + ", Departure at: \t" + flight.getDeparture() + "\n");
         result.append("Destination: \t\t" + flight.getDestinationIata() + ", Arrival at: \t" + flight.getArrival() + "\n");
         result.append("Airline: \t\t\t" + flight.getAirline() + "\n");
         result.append("Aircraft: \t\t\t" + flight.getAircraft() + "\n");
+        result.append("Expired: \t\t\t" + (isExpired() ? "Yes" : "No") + "\n");
         return result.toString();
     }
 }

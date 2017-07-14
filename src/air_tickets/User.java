@@ -16,7 +16,7 @@ public class User {
     private String login;
     private Account account;
     private long totallyPaid;
-    private TariffType tariffType;
+    public TariffType tariffType;
     private Passenger passenger;
     private List<Bookmark> bookmarks = new ArrayList<>();
     private List<Ticket> tickets = new ArrayList<>();
@@ -24,6 +24,7 @@ public class User {
     public User(String login) {
         this.login = login;
         this.account = new Account(0);
+        this.tariffType = TariffType.STANDARD;
     }
 
     public String getId() {
@@ -71,19 +72,17 @@ public class User {
         FlightRecord flightRecord = Schedule.getInstance().getFlightRecordById(flightRecordId);
         List<Ticket> createdTickets = new ArrayList<>();
 
-        long fullPrice = isBoughtDirectly ?
-                passengers.size() * tariff.calculateFullPrice(flightRecord, seatClass) :
-                passengers.size() * tariff.calculateBookingPrice(flightRecord, seatClass);
+        long fullPrice = passengers.size() * tariff.calculateFullPrice(flightRecord, seatClass);
 
         if (account.getBalance() < fullPrice)
             throw new Exception("Not enough amount on the user balance!");
         if (!flightRecord.isEnoughSeats(seatClass, passengers.size()))
-            throw new Exception("Not enough available seats is available on flight!");
+            throw new Exception("Not enough seats is available on flight!");
 
         for (Passenger passenger : passengers) {
             long price = fullPrice / passengers.size();
-            createdTickets.add(new Ticket(flightRecord.getId(), passenger, seatClass,
-                    isBoughtDirectly ? State.BOUGHT : State.BOOKED, price));
+
+            createdTickets.add(new Ticket(flightRecord.getId(), passenger, seatClass, isBoughtDirectly, price));
             flightRecord.decrementAvailableSeats(seatClass);
         }
 
@@ -91,6 +90,7 @@ public class User {
         totallyPaid += fullPrice;
         tariffType = tariff.getNextTariff(totallyPaid);
         tickets.addAll(createdTickets);
+
         return createdTickets;
     }
 
@@ -100,7 +100,9 @@ public class User {
             if (ticket.getBookingState() != State.BOOKED)
                 throw new IllegalArgumentException("Can't buy not booked ticket");
 
-        long fullPrice = getTariff().calculatePriceForBooked(bookedTickets);
+        long fullPrice = 0;
+        for (Ticket ticket : bookedTickets)
+            fullPrice += getTariff().calculatePriceForBooked(ticket);
 
         if (getBalance() < fullPrice)
             throw new Exception("Not enough amount on the user balance!");
@@ -119,7 +121,9 @@ public class User {
             if (ticket.getBookingState() != State.BOOKED)
                 throw new IllegalArgumentException("Can't buy not booked ticket");
 
-        long refundAmount = getTariff().calculateUnBookingRefund(bookedTickets);
+        long refundAmount = 0;
+        for (Ticket ticket : bookedTickets)
+             refundAmount += getTariff().calculateUnBookingRefund(ticket);
 
         for(Ticket ticket : bookedTickets) {
             ticket.setBookingState(State.FREE);
@@ -128,5 +132,20 @@ public class User {
 
         account.debit(refundAmount);
         return bookedTickets;
+    }
+
+    public String getAccountingInfo() {
+        StringBuilder result = new StringBuilder("User's accounting info:");
+        result.append("\n--------------------------------------------------------------------------\n");
+        result.append("Current balance: \t\t\t$" + account.getBalance() + "\n");
+        result.append("Current tariff: \t\t\t" + tariffType.toString() + "\n");
+        //result.append("Next tariff: \t\t\t\t" + getTariff().getNextTariff(1000000000) + "\n");
+        result.append("Amount left to upgrade: \t$" + getTariff().requiredForUpgrade(totallyPaid));
+        result.append("\n--------------------------------------------------------------------------\n");
+        return result.toString();
+    }
+
+    public String toString() {
+        return login;
     }
 }

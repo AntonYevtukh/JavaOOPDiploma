@@ -1,5 +1,9 @@
 package air_tickets;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by Anton on 10.07.2017.
  */
@@ -15,8 +19,21 @@ public enum Gender {
         this.out = out;
     }
 
-    @Override
+    public static Gender getByCode(int code) {
+        if (!getIndexes().contains(code))
+            throw new IllegalArgumentException("Wrong gender code");
+        else
+            for (Gender gender : Gender.values())
+                if (code == gender.code)
+                    return gender;
+        return Gender.NOT_KNOWN;
+    }
+
     public String toString() {
         return this.out;
+    }
+
+    public static Set<Integer> getIndexes() {
+        return new HashSet<>(Arrays.asList(0, 1, 2, 9));
     }
 }

@@ -58,7 +58,7 @@ public class Schedule {
         String separator = "--------------------------------------------------------------------------\n";
         StringJoiner joiner = new StringJoiner("", "All flights in schedule:\n" + separator, "");
         for (FlightRecord record : records.values())
-            joiner.add(record.getFullInfo());
+            joiner.add(record.toString());
         return joiner.toString();
     }
 }
