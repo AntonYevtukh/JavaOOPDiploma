@@ -62,7 +62,7 @@ public class Ticket {
         return tariff.calculatePriceForBooked(this);
     }
 
-    public void setBookingState(State bookingState) {
+    void setBookingState(State bookingState) {
         this.bookingState = bookingState;
     }
 

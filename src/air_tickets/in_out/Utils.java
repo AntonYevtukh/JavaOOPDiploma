@@ -17,20 +17,29 @@ public class Utils {
 
     private static Scanner scanner = new Scanner(System.in).useDelimiter("\n");
 
-    public static int readInt(int bound) {
+    public static int readInt(int lowerBound, int upperBound, boolean showMessage) {
         clearStream();
         int i;
-        System.out.println("Enter integer between 0 and " + bound + ":");
+        System.out.print(showMessage ? "Enter integer in range <" + lowerBound + ", " + upperBound + ">\n" : "");
         do {
             while (!scanner.hasNextInt()) {
-                System.out.print("Invalid input, please try again:\n<-");
+                System.out.print("Invalid input format, please try again:\n<-");
                 scanner.next();
             }
             i = scanner.nextInt();
-            if (i <= 0 || i > bound)
-                System.out.print("Invalid range, should be <1, " + bound + ">, please, try again:\n<-");
-        } while (i <= 0 || i > bound);
+            if (i < lowerBound || i > upperBound)
+                System.out.println("Invalid value, should be in range <" + lowerBound + ", " + upperBound +
+                        ">, please, try again");
+        } while (i < lowerBound || i > upperBound);
         return i;
+    }
+
+    public static int readInt(int upperBound) {
+        return readInt(1, upperBound,false);
+    }
+
+    public static int readMenuItem(int menuSize) {
+        return readInt(0, menuSize,false);
     }
 
     public static String readString() {
@@ -63,7 +72,7 @@ public class Utils {
                 }
             }
             if (!correct)
-                System.out.println("Invalid input format or value not in range <1, " + bound + ">, please, try again");
+                System.out.println("Invalid input format or value is not in range <1, " + bound + ">, please, try again");
         } while (!correct);
 
         int[] result = itemSet.stream().mapToInt(Integer::intValue).toArray();

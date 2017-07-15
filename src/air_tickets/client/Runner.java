@@ -5,6 +5,8 @@ import air_tickets.globals.Schedule;
 import air_tickets.globals.Users;
 import air_tickets.globals.World;
 import air_tickets.in_out.Utils;
+import air_tickets.proc_menu.MainMenu;
+import air_tickets.proc_menu.UserMenu;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -22,6 +24,7 @@ public class Runner {
     public static void main(String[] args) {
 
         MaualRunner.run();
+        new MainMenu().run();
         /*for (int i = 0; i < 3; i++) {
             System.out.println("Select few numbers from {1, 2, 3, 4, 5}:");
             int[] input = Utils.readItemNumbers(5);
@@ -62,8 +65,8 @@ class WorldInitializer {
         //System.out.println(world.getAirportsString());
         //System.out.println(world.getCitiesString());
 
-        for (Airport airport : world.getAirportsByCityIata("PAR"))
-            System.out.println(airport);
+        //for (Airport airport : world.getAirportsByCityIata("PAR"))
+            //System.out.println(airport);
 
         Aircraft boeing = new Aircraft("B-737-300", 100, 50, 0);
 
@@ -98,15 +101,15 @@ class WorldInitializer {
         Passenger anton = new Passenger("Anton", "Yevtukh", Gender.MALE,
                 LocalDate.of(1991,2,25), "ME 814732");
 
-        User myUser = new User("anton172");
+
         Users users = Users.getInstance();
-        users.signUp(myUser);
+        User myUser = users.signUp("anton172");
 
         //System.out.println("Users" + users.getAccounts().values());
 
         myUser.getAccount().debit(100500L);
         myUser.setPassenger(anton);
-        myUser.setPassenger(Passenger.readFromConsole());
+        //myUser.setPassenger(Passenger.readFromConsole());
     }
 }
 
@@ -121,8 +124,8 @@ class MaualRunner {
         World world = World.getInstance();
         Users users = Users.getInstance();
 
-        System.out.println("Searching for flight: ");
-        System.out.println("\n****************************************************************\n");
+        //System.out.println("Searching for flight: ");
+        //System.out.println("\n****************************************************************\n");
 
         searchResults.addAll(schedule.searchForFlight(world.getAirportIatasByString("Kiev"),
                 world.getAirportIatasByString("PAR"), LocalDate.of(2017, 7, 24),
@@ -141,8 +144,8 @@ class MaualRunner {
             System.out.println(exc.getMessage());
         }
 
-        user.getTickets().forEach(System.out::println);
-        System.out.println(user.getAccountingInfo());
+        //user.getTickets().forEach(System.out::println);
+        //System.out.println(user.getAccountingInfo());
 
         try {
             user.buyBookedTickets(user.getTickets());
@@ -151,12 +154,13 @@ class MaualRunner {
             System.out.println(exc.getMessage());
         }
 
-        user.getTickets().forEach(System.out::println);
-        System.out.println(user.getAccountingInfo());
+        //user.getTickets().forEach(System.out::println);
+        //System.out.println(user.getAccountingInfo());
 
-        searchResults.forEach(System.out::println);
+        //searchResults.forEach(System.out::println);
 
         //System.out.println(schedule.allFlightString());
         //System.out.println(searchResults);
+        Users.getInstance().signOut();
     }
 }

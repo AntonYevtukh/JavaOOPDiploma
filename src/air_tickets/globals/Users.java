@@ -34,11 +34,12 @@ public class Users {
         }
     }
 
-    public User signUp (User newUser)
+    public User signUp (String login)
             throws IllegalArgumentException {
-        if (accounts.containsKey(newUser.getLogin()))
+        if (accounts.containsKey(login))
             throw new IllegalArgumentException("Login already exists");
         else {
+            User newUser = new User(login);
             accounts.put(newUser.getLogin(), newUser);
             currentUser = newUser;
             return newUser;
