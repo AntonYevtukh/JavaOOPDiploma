@@ -84,16 +84,16 @@ class WorldInitializer {
         flightOnePrices.put(SeatClass.BUSINESS, 300L);
         flightOnePrices.put(SeatClass.FIRST, 0L);
 
-        schedule.addFlight(flightOne, LocalDate.of(2017, 7, 24),
+        schedule.addFlight(flightOne, LocalDate.of(2017, 8, 24),
                 flightOnePrices);
 
-        schedule.addFlight(flightOne, LocalDate.of(2017, 7, 28),
+        schedule.addFlight(flightOne, LocalDate.of(2017, 6, 22),
                 flightOnePrices);
 
-        schedule.addFlight(flightTwo, LocalDate.of(2017, 7, 24),
+        schedule.addFlight(flightTwo, LocalDate.of(2017, 8, 24),
                 flightOnePrices);
 
-        schedule.addFlight(flightThree, LocalDate.of(2017, 7, 24),
+        schedule.addFlight(flightThree, LocalDate.of(2017, 8, 24),
                 flightOnePrices);
 
         //System.out.println(schedule.allFlightString());
@@ -107,7 +107,7 @@ class WorldInitializer {
 
         //System.out.println("Users" + users.getAccounts().values());
 
-        myUser.getAccount().debit(100500L);
+        myUser.debitAccount(100500L);
         myUser.setPassenger(anton);
         //myUser.setPassenger(Passenger.readFromConsole());
     }
@@ -128,7 +128,7 @@ class MaualRunner {
         //System.out.println("\n****************************************************************\n");
 
         searchResults.addAll(schedule.searchForFlight(world.getAirportIatasByString("Kiev"),
-                world.getAirportIatasByString("PAR"), LocalDate.of(2017, 7, 24),
+                world.getAirportIatasByString("PAR"), LocalDate.of(2017, 8, 24),
                 SeatClass.ECONOMY, 15));
 
         User user = users.signIn("anton172");
@@ -143,6 +143,10 @@ class MaualRunner {
         catch (Exception exc) {
             System.out.println(exc.getMessage());
         }
+
+        user.getBookmarks().add(new Bookmark(searchResults.get(0), SeatClass.ECONOMY, 2));
+        user.getBookmarks().add(new Bookmark(searchResults.get(1), SeatClass.BUSINESS, 1));
+        user.getBookmarks().add(new Bookmark(searchResults.get(2), SeatClass.ECONOMY, 1));
 
         //user.getTickets().forEach(System.out::println);
         //System.out.println(user.getAccountingInfo());

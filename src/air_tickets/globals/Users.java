@@ -57,4 +57,8 @@ public class Users {
     public Map<String, User> getAccounts() {
         return accounts;
     }
+
+    public boolean isLogged() {
+        return currentUser != defaultUser;
+    }
 }

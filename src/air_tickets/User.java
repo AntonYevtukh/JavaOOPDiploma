@@ -55,8 +55,8 @@ public class User {
         return Tariffs.getInstance().getTariffByType(tariffType);
     }
 
-    public Account getAccount() {
-        return account;
+    public void debitAccount(long amount) {
+        account.debit(amount);
     }
 
     public long getBalance() {
@@ -70,6 +70,10 @@ public class User {
 
         Tariff tariff = getTariff();
         FlightRecord flightRecord = Schedule.getInstance().getFlightRecordById(flightRecordId);
+
+        if (flightRecord.isExpired())
+            throw new Exception("Flight is expired!");
+
         List<Ticket> createdTickets = new ArrayList<>();
 
         long fullPrice = passengers.size() * tariff.calculateFullPrice(flightRecord, seatClass);

@@ -52,6 +52,10 @@ public class Ticket {
         return bookingState;
     }
 
+    public LocalDateTime getBookedAt() {
+        return bookedAt;
+    }
+
     public long getUnBookingRefund() {
         Tariff tariff = Users.getInstance().getCurrentUser().getTariff();
         return tariff.calculateUnBookingRefund(this);
@@ -71,6 +75,10 @@ public class Ticket {
                 ";\nOrigin: " + getFlightRecord().getFlight().getOriginIata() +
                 "Destination: " + getFlightRecord().getFlight().getDestinationIata() +
                 ";\nPassenger: " + passenger.getFullName().toUpperCase();
+    }
+
+    public boolean isExpired() {
+        return getFlightRecord().isExpired();
     }
 
     public String toString () {

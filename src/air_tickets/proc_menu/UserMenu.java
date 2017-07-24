@@ -1,5 +1,6 @@
 package air_tickets.proc_menu;
 
+import air_tickets.User;
 import air_tickets.globals.Users;
 import air_tickets.in_out.Utils;
 
@@ -27,12 +28,40 @@ public class UserMenu {
                     showAccountingInfo();
                     break;
                 case 2:
+                    showPassengerInfo();
                     break;
+                case 3:
+                    showTickets();
+                    break;
+                case 4:
+                    showBookmarks();
+                    break;
+                case 5:
+                    findTickets();
+                    break;
+                case 0:
+                    Users.getInstance().signOut();
             }
         }
     }
 
     private void showAccountingInfo() {
-        System.out.println(Users.getInstance().getCurrentUser().getAccountingInfo());
+        new AccountingMenu().run();
+    }
+
+    private void showPassengerInfo() {
+        new PassengerMenu().run();
+    }
+
+    private void showTickets() {
+        new TicketMenu().run();
+    }
+
+    private void findTickets() {
+        new SearchMenu().run();
+    }
+
+    private void showBookmarks() {
+        new BookmarkMenu().run();
     }
 }

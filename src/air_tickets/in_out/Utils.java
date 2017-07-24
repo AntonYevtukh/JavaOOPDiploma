@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -79,6 +80,14 @@ public class Utils {
         for (int i = 0; i < result.length; i++)
             result[i]--;
         return result;
+    }
+
+    public static <E> void printList(List<E> list) {
+        int i = 1;
+        for (E elem : list) {
+            System.out.println(i++ + ".");
+            System.out.println(elem);
+        }
     }
 
     public static LocalDate readDate() {

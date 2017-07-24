@@ -24,7 +24,7 @@ public class MainMenu {
         int action = -1;
         while (action != 0) {
             showItems();
-            action = Utils.readMenuItem(2);
+            action = Utils.readMenuItem(3);
             switch (action) {
                 case 1:
                     sign(Users.getInstance()::signIn, "your");
@@ -33,6 +33,7 @@ public class MainMenu {
                     sign(Users.getInstance()::signUp, "new");
                     break;
                 case 3:
+                    findTickets();
                     break;
             }
         }
@@ -56,5 +57,9 @@ public class MainMenu {
             }
         }
         new UserMenu().run();
+    }
+
+    private void findTickets() {
+        new SearchMenu().run();
     }
 }

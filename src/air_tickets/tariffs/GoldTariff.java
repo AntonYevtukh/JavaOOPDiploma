@@ -18,7 +18,7 @@ public class GoldTariff implements Tariff{
     }
 
     public long calculateUnBookingRefund(Ticket ticket) {
-        if (ticket.getFlightRecord().isExpired())
+        if (ticket.isExpired())
             return 0;
         else
             return (long) (ticket.getPrice() * 0.05);

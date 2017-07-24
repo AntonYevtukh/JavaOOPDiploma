@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * Created by Anton on 10.07.2017.
  */
-public class BookingSystem {
+/*public class BookingSystem {
 
     public static List<Ticket> bookTickets(User user, FlightRecord flightRecord,
                                            Map<Passenger, SeatClass> passengerSeats, boolean isBoughtDirectly) {
@@ -50,4 +50,4 @@ public class BookingSystem {
         }
         return true;
     }
-}
+}*/
