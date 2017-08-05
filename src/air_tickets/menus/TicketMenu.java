@@ -1,7 +1,8 @@
-package air_tickets.proc_menu;
+package air_tickets.menus;
 
 import air_tickets.*;
 import air_tickets.globals.Users;
+import air_tickets.globals.World;
 import air_tickets.in_out.Utils;
 
 import java.time.LocalDate;
@@ -18,7 +19,6 @@ import java.util.function.Predicate;
 public class TicketMenu {
 
     private List<Ticket> tickets;
-    boolean bookedOnly;
 
     public TicketMenu() {
         tickets = new ArrayList<>(Users.getInstance().getCurrentUser().getTickets());
@@ -27,7 +27,7 @@ public class TicketMenu {
     public void showItems() {
         showTickets();
         if (!tickets.isEmpty()) {
-            if (bookedOnly) {
+            if (containsBookedOnly()) {
                 System.out.println("1. Buy tickets");
                 System.out.println("2. Unbook tickets");
             }
@@ -46,7 +46,7 @@ public class TicketMenu {
             action = Utils.readMenuItem(6);
             switch (action) {
                 case 1:
-                    if (!tickets.isEmpty() && bookedOnly)
+                    if (!tickets.isEmpty() && containsBookedOnly())
                         try {
                             buyTickets();
                         }
@@ -55,7 +55,7 @@ public class TicketMenu {
                         }
                     break;
                 case 2:
-                    if (!tickets.isEmpty() && bookedOnly)
+                    if (!tickets.isEmpty() && containsBookedOnly())
                         unBookTickets();
                     break;
                 case 3:
@@ -68,7 +68,6 @@ public class TicketMenu {
                     break;
                 case 5:
                     tickets = new ArrayList<>(Users.getInstance().getCurrentUser().getTickets());
-                    bookedOnly = false;
                     break;
             }
         }
@@ -103,7 +102,7 @@ public class TicketMenu {
             }
         }
         if (containExpired) {
-            System.out.println("One or more tickets are expired. Do you want to proceed?");
+            System.out.println("One or more tickets are expired. Do you want to proceed and buy all other?");
             System.out.println("1. Yes\n2. No");
             int answer = Utils.readInt(2);
             if (answer == 2)
@@ -148,7 +147,7 @@ public class TicketMenu {
 
     private void sortTickets() {
         int[] answers;
-        System.out.println("Choose options: ");
+        System.out.println("Please, choose options (they will be applied in order, that you will type):");
         System.out.println("1. Sort by fly date ascending");
         System.out.println("2. Sort by fly date descending");
         System.out.println("3. Sort by booking date ascending");
@@ -186,11 +185,12 @@ public class TicketMenu {
         System.out.println("3. Show unbooked tickets");
         System.out.println("4. Filter by flight date");
         System.out.println("5. Filter by booking date");
-        System.out.println("6. Filter by price");
-        System.out.println("7. Filter by airline name");
-        System.out.println("8. Filter by passenger name");
-        System.out.println("9. Filter by class");
-        answers = Utils.readItemNumbers(9);
+        System.out.println("6. Filter by origin and destination");
+        System.out.println("7. Filter by price");
+        System.out.println("8. Filter by airline name");
+        System.out.println("9. Filter by passenger name");
+        System.out.println("10. Filter by class");
+        answers = Utils.readItemNumbers(10);
         tickets.removeIf(getTicketPredicate(answers));
     }
 
@@ -199,7 +199,6 @@ public class TicketMenu {
         for (int i : answers)
             switch (i) {
                 case 0:
-                    bookedOnly = true;
                     resultPredicate = resultPredicate.or((Ticket t) -> t.getBookingState() != State.BOOKED);
                     break;
                 case 1:
@@ -227,25 +226,36 @@ public class TicketMenu {
                             || t.getBookedAt().isAfter(endBooking));
                     break;
                 case 5:
+                    System.out.println("Please, enter origin: ");
+                    String origin = Utils.readString();
+                    System.out.println("Please, enter destination: ");
+                    String destination = Utils.readString();
+                    List<String> origins = World.getInstance().getAirportIatasByString(origin);
+                    List<String> destinations = World.getInstance().getAirportIatasByString(destination);
+                    resultPredicate = resultPredicate.or((Ticket t) ->
+                            !origins.contains(t.getFlightRecord().getFlight().getOriginIata()) ||
+                                    !destinations.contains(t.getFlightRecord().getFlight().getDestinationIata()));
+                    break;
+                case 6:
                     System.out.println("Please, select the min price:");
                     long minPrice = Utils.readInt(100500);
                     System.out.println("Please, select the min price:");
                     long maxPrice = Utils.readInt(100500);
                     resultPredicate = resultPredicate.or((Ticket t) -> t.getPrice() < minPrice || t.getPrice() > maxPrice);
                     break;
-                case 6:
+                case 7:
                     System.out.println("Please, specify the airline name");
                     String airlineName = Utils.readString();
                     resultPredicate = resultPredicate.or((Ticket t) ->
                             !t.getFlightRecord().getFlight().getAirline().toUpperCase().contains(airlineName.toUpperCase()));
                     break;
-                case 7:
+                case 8:
                     System.out.println("Please, specify the passenger name");
                     String passengerName = Utils.readString();
                     resultPredicate = resultPredicate.or((Ticket t) ->
                             !t.getPassenger().getFullName().toUpperCase().contains(passengerName.toUpperCase()));
                     break;
-                case 8:
+                case 9:
                     System.out.println("Please, select a class");
                     System.out.println("1. Economy\n2. Business\n3. First");
                     SeatClass seatClass = SeatClass.values()[Utils.readInt(3) - 1];
@@ -255,5 +265,12 @@ public class TicketMenu {
                     throw new RuntimeException("Invalid answer in bookmark filtering options");
             }
         return resultPredicate;
+    }
+
+    private boolean containsBookedOnly() {
+        for (Ticket ticket : tickets)
+            if (ticket.getBookingState() != State.BOOKED)
+                return false;
+        return true;
     }
 }

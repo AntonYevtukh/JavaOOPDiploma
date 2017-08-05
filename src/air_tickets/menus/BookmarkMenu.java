@@ -1,7 +1,8 @@
-package air_tickets.proc_menu;
+package air_tickets.menus;
 
 import air_tickets.*;
 import air_tickets.globals.Users;
+import air_tickets.globals.World;
 import air_tickets.in_out.Utils;
 import air_tickets.tariffs.Tariff;
 
@@ -22,6 +23,7 @@ public class BookmarkMenu {
 
     public void showItems() {
         showBookmarks();
+        System.out.println("Please, select action:");
         if (!bookmarks.isEmpty()) {
             System.out.println("1. Buy tickets");
             System.out.println("2. Book tickets");
@@ -75,17 +77,7 @@ public class BookmarkMenu {
         List<Passenger> passengers = new ArrayList<>();
         List<Ticket> bookedTickets = new ArrayList<>();
         for (int i = 0; i < source.getSeatCount(); i++) {
-            if (currentUser.getPassenger() != null) {
-                System.out.println("Do you prefer to use passenger info from profile?");
-                System.out.println("1. Yes\n2. No");
-                int answer2 = Utils.readInt(2);
-                if (answer2 == 1)
-                    passengers.add(currentUser.getPassenger());
-                else
-                    passengers.add(Passenger.readFromConsole());
-            }
-            else
-                passengers.add(Passenger.readFromConsole());
+            passengers.add(Utils.getNewPassenger());
         }
         try {
             bookedTickets = currentUser.bookTickets(source.getFlightRecordId(),
@@ -96,7 +88,7 @@ public class BookmarkMenu {
         }
         if (!bookedTickets.isEmpty()) {
             System.out.println("You have successfully booked tickets:\n");
-            bookedTickets.forEach(System.out::println);
+            Utils.printList(bookedTickets);
         }
     }
 
@@ -114,7 +106,7 @@ public class BookmarkMenu {
     private void showBookmarks() {
         if (!bookmarks.isEmpty()) {
             System.out.println("Your bookmarks: ");
-            bookmarks.forEach(System.out::println);
+            Utils.printList(bookmarks);
         }
         else
             System.out.println("No bookmarks found");
@@ -122,7 +114,7 @@ public class BookmarkMenu {
 
     private void sortBookmarks() {
         int[] answers;
-        System.out.println("Choose options: ");
+        System.out.println("Please, choose options (they will be applied in order, that you will type): ");
         System.out.println("1. Sort by fly date ascending");
         System.out.println("2. Sort by fly date descending");
         System.out.println("3. Sort by full price ascending");
@@ -153,18 +145,17 @@ public class BookmarkMenu {
         int[] answers;
         System.out.println("Choose options: ");
         System.out.println("1. Filter by flight date");
-        System.out.println("2. Filter by full price");
-        System.out.println("3. Filter by booking price");
-        System.out.println("4. Filter by class");
-        answers = Utils.readItemNumbers(4);
+        System.out.println("2. Filter by origin and destination");
+        System.out.println("3. Filter by full price");
+        System.out.println("4. Filter by booking price");
+        System.out.println("5. Filter by class");
+        answers = Utils.readItemNumbers(5);
         bookmarks.removeIf(getBookmarkPredicate(answers));
     }
 
     private Predicate<Bookmark> getBookmarkPredicate(int[] answers) {
         Tariff tariff = Users.getInstance().getCurrentUser().getTariff();
         Predicate<Bookmark> resultPredicate = (Bookmark b) -> false;
-        for (int a : answers)
-            System.out.println(a);
         for (int i : answers)
             switch (i) {
                 case 0:
@@ -176,6 +167,17 @@ public class BookmarkMenu {
                             || b.getFlightRecord().getDate().isAfter(end));
                     break;
                 case 1:
+                    System.out.println("Please, enter origin: ");
+                    String origin = Utils.readString();
+                    System.out.println("Please, enter destination: ");
+                    String destination = Utils.readString();
+                    List<String> origins = World.getInstance().getAirportIatasByString(origin);
+                    List<String> destinations = World.getInstance().getAirportIatasByString(destination);
+                    resultPredicate = resultPredicate.or((Bookmark b) ->
+                            !origins.contains(b.getFlightRecord().getFlight().getOriginIata()) ||
+                                    !destinations.contains(b.getFlightRecord().getFlight().getDestinationIata()));
+                    break;
+                case 2:
                     System.out.println("Please, enter the min full price");
                     long minFullPrice = Utils.readInt(100500);
                     System.out.println("Please, enter the max full price");
@@ -183,7 +185,7 @@ public class BookmarkMenu {
                     resultPredicate = resultPredicate.or((Bookmark b) -> b.calculateFullPrice(tariff) < minFullPrice
                             || b.calculateFullPrice(tariff) > maxFullPrice);
                     break;
-                case 2:
+                case 3:
                     System.out.println("Please, enter the min booking price");
                     long minBookingPrice = Utils.readInt(100500);
                     System.out.println("Please, enter the max booking price");
@@ -191,7 +193,7 @@ public class BookmarkMenu {
                     resultPredicate = resultPredicate.or((Bookmark b) -> b.calculateFullPrice(tariff) < minBookingPrice
                             || b.calculateFullPrice(tariff) > maxBookingPrice);
                     break;
-                case 3:
+                case 4:
                     System.out.println("Please, select a class");
                     System.out.println("1. Economy\n2. Business\n3. First");
                     SeatClass seatClass = SeatClass.values()[Utils.readInt(3) - 1];

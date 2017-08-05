@@ -1,6 +1,5 @@
-package air_tickets.proc_menu;
+package air_tickets.menus;
 
-import air_tickets.User;
 import air_tickets.globals.Users;
 import air_tickets.in_out.Utils;
 
@@ -10,6 +9,7 @@ import air_tickets.in_out.Utils;
 public class UserMenu {
 
     public void showItems() {
+        System.out.println("Please, select action:");
         System.out.println("1. View accounting info");
         System.out.println("2. View passenger profile");
         System.out.println("3. View tickets");

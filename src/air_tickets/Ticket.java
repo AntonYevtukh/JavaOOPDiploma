@@ -4,6 +4,7 @@ import air_tickets.globals.Schedule;
 import air_tickets.globals.Users;
 import air_tickets.tariffs.Tariff;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -12,7 +13,7 @@ import java.util.UUID;
 /**
  * Created by Anton on 10.07.2017.
  */
-public class Ticket {
+public class Ticket implements Serializable {
 
     private String id = UUID.randomUUID().toString();
     private String flightRecordId;
@@ -68,13 +69,6 @@ public class Ticket {
 
     void setBookingState(State bookingState) {
         this.bookingState = bookingState;
-    }
-
-    String getShortInfo() {
-        return "Flight Number: " + getFlightRecord().getFlight().getFlightNumber() + "; date: " + getFlightRecord().getDate() +
-                ";\nOrigin: " + getFlightRecord().getFlight().getOriginIata() +
-                "Destination: " + getFlightRecord().getFlight().getDestinationIata() +
-                ";\nPassenger: " + passenger.getFullName().toUpperCase();
     }
 
     public boolean isExpired() {

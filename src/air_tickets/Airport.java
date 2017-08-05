@@ -1,12 +1,13 @@
 package air_tickets;
 
+import java.io.Serializable;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 
 /**
  * Created by Anton on 09.07.2017.
  */
-public class Airport {
+public class Airport implements Serializable {
 
     private String name;
     private String iata;

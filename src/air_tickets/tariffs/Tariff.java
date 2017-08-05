@@ -18,5 +18,5 @@ public interface Tariff {
     long calculateUnBookingRefund(Ticket ticket);
     long calculatePriceForBooked(Ticket ticket);
     long requiredForUpgrade(long totallyPaid);
-    TariffType getNextTariff(long totallyPaid);
+    Tariffs getNextTariff(long totallyPaid);
 }

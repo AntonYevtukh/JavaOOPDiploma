@@ -1,22 +1,22 @@
 package air_tickets;
 
 import air_tickets.tariffs.Tariff;
-import air_tickets.tariffs.TariffType;
-import air_tickets.tariffs.Tariffs;
 import air_tickets.globals.Schedule;
+import air_tickets.tariffs.Tariffs;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Created by Anton on 06.07.2017.
  */
-public class User {
+public class User implements Serializable {
 
     private final String id = UUID.randomUUID().toString();
     private String login;
     private Account account;
     private long totallyPaid;
-    public TariffType tariffType;
+    public Tariffs tariffType;
     private Passenger passenger;
     private List<Bookmark> bookmarks = new ArrayList<>();
     private List<Ticket> tickets = new ArrayList<>();
@@ -24,7 +24,7 @@ public class User {
     public User(String login) {
         this.login = login;
         this.account = new Account(0);
-        this.tariffType = TariffType.STANDARD;
+        this.tariffType = Tariffs.STANDARD;
     }
 
     public String getId() {
@@ -52,9 +52,10 @@ public class User {
     }
 
     public Tariff getTariff() {
-        return Tariffs.getInstance().getTariffByType(tariffType);
+        return tariffType;
     }
 
+    //For test only
     public void debitAccount(long amount) {
         account.debit(amount);
     }
@@ -79,9 +80,9 @@ public class User {
         long fullPrice = passengers.size() * tariff.calculateFullPrice(flightRecord, seatClass);
 
         if (account.getBalance() < fullPrice)
-            throw new Exception("Not enough amount on the user balance!");
+            throw new Exception("\nError: Not enough amount on the user balance!\n");
         if (!flightRecord.isEnoughSeats(seatClass, passengers.size()))
-            throw new Exception("Not enough seats is available on flight!");
+            throw new Exception("\nError: Not enough seats is available on flight!\n");
 
         for (Passenger passenger : passengers) {
             long price = fullPrice / passengers.size();
@@ -143,7 +144,6 @@ public class User {
         result.append("\n--------------------------------------------------------------------------\n");
         result.append("Current balance: \t\t\t$" + account.getBalance() + "\n");
         result.append("Current tariff: \t\t\t" + tariffType.toString() + "\n");
-        //result.append("Next tariff: \t\t\t\t" + getTariff().getNextTariff(1000000000) + "\n");
         result.append("Amount left to upgrade: \t$" + getTariff().requiredForUpgrade(totallyPaid));
         result.append("\n--------------------------------------------------------------------------\n");
         return result.toString();

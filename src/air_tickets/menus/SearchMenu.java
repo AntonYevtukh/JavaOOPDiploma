@@ -1,4 +1,4 @@
-package air_tickets.proc_menu;
+package air_tickets.menus;
 
 import air_tickets.*;
 import air_tickets.globals.Schedule;
@@ -21,6 +21,7 @@ public class SearchMenu {
     private List<FlightRecord> searchResults = null;
 
     public void showItems() {
+        System.out.println("Please, select action:");
         System.out.println("1. Search for tickets");
         if (!noResults) {
             System.out.println("2. Buy tickets");
@@ -35,14 +36,13 @@ public class SearchMenu {
         int action = -1;
         while (action != 0) {
             showItems();
-            int itemCount = noResults ? 1 : 4;
             action = Utils.readMenuItem(4);
             switch (action) {
                 case 1:
                     findTickets();
                     if (!searchResults.isEmpty() && Users.getInstance().isLogged())
                         noResults = false;
-                    searchResults.forEach(System.out::println);
+                    Utils.printList(searchResults);
                     break;
                 case 2:
                     buyTickets(true);
@@ -63,18 +63,22 @@ public class SearchMenu {
         LocalDate date;
 
         System.out.println("Enter info for search:");
-        System.out.println("Enter origin:");
+        System.out.println("Enter origin (3-letter upper case string will be recognized as IATA code):");
         origins = World.getInstance().getAirportIatasByString(Utils.readString());
-        System.out.println("Enter destination:");
+        System.out.println("Enter destination (3-letter upper case string will be recognized as IATA code):");
         destinations = World.getInstance().getAirportIatasByString(Utils.readString());
         System.out.println("Enter date:");
         date = Utils.readDate();
         System.out.println("Choose a class:");
         System.out.println("1. Economy\n2. Business\n3. First");
         seatClass = SeatClass.values()[Utils.readInt(3) - 1];
-        System.out.println("Enter count of seats");
+        System.out.println("Enter count of seats (not more than 10)");
         seatCount = Utils.readInt(10);
         searchResults =  Schedule.getInstance().searchForFlight(origins, destinations, date, seatClass, seatCount);
+        if (!searchResults.isEmpty())
+            System.out.println("Tickets found:\n");
+        else
+            System.out.println("No tickets were found by your query.");
     }
 
     public void buyTickets(boolean buyDirectly) {
@@ -98,17 +102,7 @@ public class SearchMenu {
             seatCount = Utils.readInt(10);
         }
         for (int i = 0; i < seatCount; i++) {
-            if (currentUser.getPassenger() != null) {
-                System.out.println("Do you prefer to use passenger info from profile?");
-                System.out.println("1. Yes\n2. No");
-                int answer2 = Utils.readInt(2);
-                if (answer2 == 1)
-                    passengers.add(currentUser.getPassenger());
-                else
-                    passengers.add(Passenger.readFromConsole());
-            }
-            else
-                passengers.add(Passenger.readFromConsole());
+            passengers.add(Utils.getNewPassenger());
         }
         try {
             boughtTickets = currentUser.bookTickets(searchResults.get(flightNumber).getId(),

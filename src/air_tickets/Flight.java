@@ -2,12 +2,13 @@ package air_tickets;
 
 import air_tickets.globals.World;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 
 /**
  * Created by Anton on 09.07.2017.
  */
-public class Flight {
+public class Flight implements Serializable {
 
     private String flightNumber;
     private String originIata;

@@ -1,5 +1,6 @@
 package air_tickets;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -7,7 +8,7 @@ import java.util.Set;
 /**
  * Created by Anton on 10.07.2017.
  */
-public enum Gender {
+public enum Gender  implements Serializable {
 
     NOT_KNOWN(0, "Not known"), MALE(1, "Male"), FEMALE(2, "Female"), NOT_APPLICABLE(3, "Not applicable");
 

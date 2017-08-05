@@ -3,21 +3,34 @@ package air_tickets.globals;
 import air_tickets.Airport;
 import air_tickets.City;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Created by Anton on 10.07.2017.
  */
-public class World {
+public class World implements Serializable {
 
-    private static final World instance = new World();
+    private static World instance;
     private final Map<String, Airport> airports = new HashMap<>();
     private final Map<String, City> cities = new HashMap<>();
 
     private World() {}
 
     public static World getInstance() {
+        if (instance == null)
+            instance = new World();
         return instance;
+    }
+
+    public boolean setAsInstance() {
+        if (instance != null) {
+            return false;
+        }
+        else {
+            instance = this;
+            return true;
+        }
     }
 
     public void addAirport(Airport airport)
@@ -64,7 +77,7 @@ public class World {
     public Airport getAirportByName(String name) {
         List<Airport> airports = new ArrayList<>(this.airports.values());
         for (Airport airport : airports)
-            if (airport.getName().equals(name))
+            if (airport.getName().toLowerCase().equals(name.toLowerCase()))
                 return airport;
         return null;
     }
@@ -79,7 +92,7 @@ public class World {
     public List<Airport> getAirportsByCityName(String name) {
         List<City> cities = new ArrayList<>(this.cities.values());
         for (City city : cities)
-            if (city.getName().equals(name))
+            if (city.getName().toLowerCase().equals(name.toLowerCase()))
                 return new ArrayList<>(city.getAirports());
         return null;
     }
@@ -125,4 +138,14 @@ public class World {
             joiner.add(city.toString());
         return joiner.toString();
     }
+
+    /*private Object readResolve() {
+        if (setAsInstance()) {
+            System.err.println("World instance successfully loaded from the file.");
+        }
+        else {
+            System.err.println("World instance already exists, nothing to load.");
+        }
+        return instance;
+    }*/
 }

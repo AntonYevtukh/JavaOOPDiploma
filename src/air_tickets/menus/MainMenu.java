@@ -1,10 +1,9 @@
-package air_tickets.proc_menu;
+package air_tickets.menus;
 
 import air_tickets.User;
 import air_tickets.globals.Users;
 import air_tickets.in_out.Utils;
 
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**

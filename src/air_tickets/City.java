@@ -1,16 +1,17 @@
 package air_tickets;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Created by Anton on 09.07.2017.
  */
-public class City {
+public class City implements Serializable {
 
-    String name;
-    String iata;
-    Set<Airport> airports = new HashSet<>();
+    private String name;
+    private String iata;
+    private Set<Airport> airports = new HashSet<>();
 
     public City(String name, String iata) {
         this.name = name;

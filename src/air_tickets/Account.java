@@ -1,9 +1,11 @@
 package air_tickets;
 
+import java.io.Serializable;
+
 /**
  * Created by Anton on 06.07.2017.
  */
-public class Account {
+public class Account implements Serializable {
 
     private long balance;
 
