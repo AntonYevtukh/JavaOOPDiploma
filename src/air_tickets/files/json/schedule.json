@@ -1,0 +1,124 @@
+{
+  "records": {
+    "KBP-LBG-1142 2017-06-22": {
+      "id": "2da57ef3-5a69-402b-a730-987d20fc93cb",
+      "flight": {
+        "flightNumber": "KBP-LBG-1142",
+        "originIata": "KBP",
+        "destinationIata": "LBG",
+        "departure": "07:00",
+        "arrival": "09:00",
+        "aircraft": {
+          "type": "B-737-300",
+          "seats": {
+            "ECONOMY": 100,
+            "FIRST": 0,
+            "BUSINESS": 50
+          }
+        },
+        "airline": "МАУ"
+      },
+      "date": "22.06.2017",
+      "prices": {
+        "ECONOMY": 200,
+        "BUSINESS": 300,
+        "FIRST": 0
+      },
+      "availableSeats": {
+        "ECONOMY": 100,
+        "BUSINESS": 50,
+        "FIRST": 0
+      }
+    },
+    "KBP-LBG-1142 2017-08-24": {
+      "id": "38bc7c10-57a8-4359-9f47-56d2561ea669",
+      "flight": {
+        "flightNumber": "KBP-LBG-1142",
+        "originIata": "KBP",
+        "destinationIata": "LBG",
+        "departure": "07:00",
+        "arrival": "09:00",
+        "aircraft": {
+          "type": "B-737-300",
+          "seats": {
+            "ECONOMY": 100,
+            "FIRST": 0,
+            "BUSINESS": 50
+          }
+        },
+        "airline": "МАУ"
+      },
+      "date": "24.08.2017",
+      "prices": {
+        "ECONOMY": 200,
+        "BUSINESS": 300,
+        "FIRST": 0
+      },
+      "availableSeats": {
+        "ECONOMY": 95,
+        "BUSINESS": 50,
+        "FIRST": 0
+      }
+    },
+    "IEV-CDG-1235 2017-08-24": {
+      "id": "9e029a1b-f255-4672-8dc1-089e12429bd8",
+      "flight": {
+        "flightNumber": "IEV-CDG-1235",
+        "originIata": "IEV",
+        "destinationIata": "CDG",
+        "departure": "10:00",
+        "arrival": "12:00",
+        "aircraft": {
+          "type": "B-737-300",
+          "seats": {
+            "ECONOMY": 100,
+            "FIRST": 0,
+            "BUSINESS": 50
+          }
+        },
+        "airline": "МАУ"
+      },
+      "date": "24.08.2017",
+      "prices": {
+        "ECONOMY": 200,
+        "BUSINESS": 300,
+        "FIRST": 0
+      },
+      "availableSeats": {
+        "ECONOMY": 100,
+        "BUSINESS": 50,
+        "FIRST": 0
+      }
+    },
+    "KBP-CDG-1248 2017-08-24": {
+      "id": "03990ecf-598e-47c0-b737-6708badf03af",
+      "flight": {
+        "flightNumber": "KBP-CDG-1248",
+        "originIata": "KBP",
+        "destinationIata": "CDG",
+        "departure": "05:30",
+        "arrival": "07:20",
+        "aircraft": {
+          "type": "B-737-300",
+          "seats": {
+            "ECONOMY": 100,
+            "FIRST": 0,
+            "BUSINESS": 50
+          }
+        },
+        "airline": "МАУ"
+      },
+      "date": "24.08.2017",
+      "prices": {
+        "ECONOMY": 200,
+        "BUSINESS": 300,
+        "FIRST": 0
+      },
+      "availableSeats": {
+        "ECONOMY": 100,
+        "BUSINESS": 50,
+        "FIRST": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "airports": {
+    "LBG": {
+      "name": "Le Bourget",
+      "iata": "LBG",
+      "timezone": "Europe/Paris"
+    },
+    "CDG": {
+      "name": "Charles de Gaulle",
+      "iata": "CDG",
+      "timezone": "Europe/Paris"
+    },
+    "KBP": {
+      "name": "Borispol",
+      "iata": "KBP",
+      "timezone": "Europe/Kiev"
+    },
+    "IEV": {
+      "name": "Zhuliany",
+      "iata": "IEV",
+      "timezone": "Europe/Kiev"
+    }
+  },
+  "cities": {
+    "PAR": {
+      "name": "Paris",
+      "iata": "PAR",
+      "airports": [
+        {
+          "name": "Le Bourget",
+          "iata": "LBG",
+          "timezone": "Europe/Paris"
+        },
+        {
+          "name": "Charles de Gaulle",
+          "iata": "CDG",
+          "timezone": "Europe/Paris"
+        }
+      ]
+    },
+    "IEV": {
+      "name": "Kiev",
+      "iata": "IEV",
+      "airports": [
+        {
+          "name": "Borispol",
+          "iata": "KBP",
+          "timezone": "Europe/Kiev"
+        },
+        {
+          "name": "Zhuliany",
+          "iata": "IEV",
+          "timezone": "Europe/Kiev"
+        }
+      ]
+    }
+  }
+}

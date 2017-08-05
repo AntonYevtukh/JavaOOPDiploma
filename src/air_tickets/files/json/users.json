@@ -1,0 +1,151 @@
+{
+  "defaultUser": {
+    "id": "5fb03f50-7c44-4aa1-a524-e66985d2de83",
+    "login": "Unregistered user",
+    "account": {
+      "balance": 0
+    },
+    "totallyPaid": 0,
+    "tariffType": "STANDARD",
+    "bookmarks": [],
+    "tickets": []
+  },
+  "currentUser": {
+    "id": "5fb03f50-7c44-4aa1-a524-e66985d2de83",
+    "login": "Unregistered user",
+    "account": {
+      "balance": 0
+    },
+    "totallyPaid": 0,
+    "tariffType": "STANDARD",
+    "bookmarks": [],
+    "tickets": []
+  },
+  "accounts": {
+    "anton172": {
+      "id": "6296cf28-00e3-4d6b-bad3-2493739f1351",
+      "login": "anton172",
+      "account": {
+        "balance": 98700
+      },
+      "totallyPaid": 1800,
+      "tariffType": "GOLD",
+      "passenger": {
+        "name": "Anton",
+        "surname": "Yevtukh",
+        "gender": "MALE",
+        "birthday": "25.02.1991",
+        "passportNumber": "ME 814732"
+      },
+      "bookmarks": [
+        {
+          "flightRecordId": "38bc7c10-57a8-4359-9f47-56d2561ea669",
+          "seatClass": "ECONOMY",
+          "seatCount": 2
+        },
+        {
+          "flightRecordId": "9e029a1b-f255-4672-8dc1-089e12429bd8",
+          "seatClass": "BUSINESS",
+          "seatCount": 1
+        },
+        {
+          "flightRecordId": "03990ecf-598e-47c0-b737-6708badf03af",
+          "seatClass": "ECONOMY",
+          "seatCount": 1
+        }
+      ],
+      "tickets": [
+        {
+          "id": "281e1ae0-5c4d-4df8-bf3e-822e13f718d1",
+          "flightRecordId": "38bc7c10-57a8-4359-9f47-56d2561ea669",
+          "passenger": {
+            "name": "Anton",
+            "surname": "Yevtukh",
+            "gender": "MALE",
+            "birthday": "25.02.1991",
+            "passportNumber": "ME 814732"
+          },
+          "seatClass": "ECONOMY",
+          "bookingState": "BOUGHT",
+          "price": 200,
+          "bookedAt": {
+            "date": "05.08.2017",
+            "time": "03:22"
+          }
+        },
+        {
+          "id": "75f04a97-0e6e-4e36-b1e3-c23abd466546",
+          "flightRecordId": "38bc7c10-57a8-4359-9f47-56d2561ea669",
+          "passenger": {
+            "name": "Anton",
+            "surname": "Yevtukh",
+            "gender": "MALE",
+            "birthday": "25.02.1991",
+            "passportNumber": "ME 814732"
+          },
+          "seatClass": "ECONOMY",
+          "bookingState": "BOUGHT",
+          "price": 200,
+          "bookedAt": {
+            "date": "05.08.2017",
+            "time": "03:22"
+          }
+        },
+        {
+          "id": "8a079e1a-b838-4427-aa10-50856766fb97",
+          "flightRecordId": "38bc7c10-57a8-4359-9f47-56d2561ea669",
+          "passenger": {
+            "name": "Anton",
+            "surname": "Yevtukh",
+            "gender": "MALE",
+            "birthday": "25.02.1991",
+            "passportNumber": "ME 814732"
+          },
+          "seatClass": "ECONOMY",
+          "bookingState": "BOUGHT",
+          "price": 200,
+          "bookedAt": {
+            "date": "05.08.2017",
+            "time": "03:22"
+          }
+        },
+        {
+          "id": "aa7d9747-5a4e-41fe-a5b7-254278272ed5",
+          "flightRecordId": "38bc7c10-57a8-4359-9f47-56d2561ea669",
+          "passenger": {
+            "name": "Anton",
+            "surname": "Yevtukh",
+            "gender": "MALE",
+            "birthday": "25.02.1991",
+            "passportNumber": "ME 814732"
+          },
+          "seatClass": "ECONOMY",
+          "bookingState": "BOUGHT",
+          "price": 200,
+          "bookedAt": {
+            "date": "05.08.2017",
+            "time": "03:22"
+          }
+        },
+        {
+          "id": "d6a054e8-712e-4507-99bc-e6bfd9dbe30a",
+          "flightRecordId": "38bc7c10-57a8-4359-9f47-56d2561ea669",
+          "passenger": {
+            "name": "Anton",
+            "surname": "Yevtukh",
+            "gender": "MALE",
+            "birthday": "25.02.1991",
+            "passportNumber": "ME 814732"
+          },
+          "seatClass": "ECONOMY",
+          "bookingState": "BOUGHT",
+          "price": 200,
+          "bookedAt": {
+            "date": "05.08.2017",
+            "time": "03:22"
+          }
+        }
+      ]
+    }
+  }
+}

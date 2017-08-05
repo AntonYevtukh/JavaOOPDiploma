@@ -1,5 +1,4 @@
 package air_tickets.in_out;
-import air_tickets.globals.World;
 import com.google.gson.*;
 
 import java.lang.reflect.Type;
